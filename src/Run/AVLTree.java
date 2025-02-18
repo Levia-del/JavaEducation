@@ -1,7 +1,7 @@
 package Run;
 
 public class AVLTree {
-	 private AVLTreeNode root;
+	 public AVLTreeNode root;
 	  private int size;
 	  private String print;
 	  
@@ -31,7 +31,6 @@ public class AVLTree {
 	          else
 	          {
 	            curr.right = new AVLTreeNode(value);
-	            curr.rightH = 1;
 	            setBalancesAndHeights();
 	            size++;
 	            return;
@@ -46,13 +45,13 @@ public class AVLTree {
 	          else
 	          {
 	            curr.left = new AVLTreeNode(value);
-	            curr.leftH = 1;
 	            setBalancesAndHeights();
-	            size++;
+	            size++;	
 	            return;
 	          }
 	        }
 	      }
+	      
 	    }
 	  }
 
@@ -105,14 +104,52 @@ public class AVLTree {
 	    postTrav(root);
 	  }
 
+	  public void RotateRight(AVLTreeNode node)
+	  {
+		  AVLTreeNode LChild = node.left;
+		  if(LChild.right != null)
+		  {
+			  node.left = LChild.right;
+			  
+		  }
+		  else
+		  {
+			  node.left = null;
+		  }
+		  LChild.right = node;
+		  root = LChild;
+		  setBalancesAndHeights();
+	  }
+	  
 	  public void postTrav(AVLTreeNode node)
 	  {
-	     if(node == null)
+	    if(node == null)
 	    {
 	      return;
 	    }
+	     node.leftH = 0;
+	     node.rightH = 0;
 	    postTrav(node.left);
 	    postTrav(node.right);
+	    if(node.left != null)
+	    {
+	    	if(node.left.left == null)
+	    	{
+	    		node.leftH = 1;
+	    	}
+	    }
+	    if(node.right != null)
+	    {
+	    	if(node.right.right == null)
+	    	{
+	    		node.rightH = 1;
+	    	}
+	    }
+	    if(node.left==null&&node.right==null)
+	    {
+	    	node.leftH = 0;
+	    	node.rightH = 0;
+	    }
 	    node.setHeights();
 	    node.setBalance();
 	  }
