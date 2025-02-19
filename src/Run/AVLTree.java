@@ -116,8 +116,44 @@ public class AVLTree {
 		  {
 			  node.left = null;
 		  }
+		  
+		  if(node == root)
+		  {
 		  LChild.right = node;
 		  root = LChild;
+		  }
+		  else
+		  {
+			  AVLTreeNode temp = node;
+			  LChild.right = node;
+			  LChild = temp;
+		  }
+		  setBalancesAndHeights();
+	  }
+	  
+	  public void RotateLeft(AVLTreeNode node)
+	  {
+		  AVLTreeNode RChild = node.right;
+		  if(RChild.left != null)
+		  {
+			  node.right = RChild.left;
+			  
+		  }
+		  else
+		  {
+			  node.right = null;
+		  }
+		  
+		  if(node == root)
+		  {
+			  RChild.left = node;
+			  root = RChild;
+		  }
+		  else {
+		  AVLTreeNode temp = node;
+		  RChild.left = node;
+		  RChild = temp;
+		  }
 		  setBalancesAndHeights();
 	  }
 	  
@@ -127,29 +163,11 @@ public class AVLTree {
 	    {
 	      return;
 	    }
-	     node.leftH = 0;
-	     node.rightH = 0;
+	    node.leftH = 0;
+	    node.rightH = 0;
+	    node.balance = 0;
 	    postTrav(node.left);
 	    postTrav(node.right);
-	    if(node.left != null)
-	    {
-	    	if(node.left.left == null)
-	    	{
-	    		node.leftH = 1;
-	    	}
-	    }
-	    if(node.right != null)
-	    {
-	    	if(node.right.right == null)
-	    	{
-	    		node.rightH = 1;
-	    	}
-	    }
-	    if(node.left==null&&node.right==null)
-	    {
-	    	node.leftH = 0;
-	    	node.rightH = 0;
-	    }
 	    node.setHeights();
 	    node.setBalance();
 	  }
