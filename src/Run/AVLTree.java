@@ -129,6 +129,7 @@ public class AVLTree {
 			  LChild = temp;
 		  }
 		  setBalancesAndHeights();
+		  
 	  }
 	  
 	  public void RotateLeft(AVLTreeNode node)
@@ -157,6 +158,10 @@ public class AVLTree {
 		  setBalancesAndHeights();
 	  }
 	  
+	  
+	  
+	  
+	  
 	  public void postTrav(AVLTreeNode node)
 	  {
 	    if(node == null)
@@ -176,4 +181,5 @@ public class AVLTree {
 	  {
 		  return size;
 	  }
+	  
 }

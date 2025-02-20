@@ -43,4 +43,9 @@ public class AVLTreeNode {
 	      rightH = Math.max(right.leftH,right.rightH)+1;
 	    }
 	   }
+	   
+	   public String toString()
+	   {
+		   return "The value is: "+value;
+	   }
 }

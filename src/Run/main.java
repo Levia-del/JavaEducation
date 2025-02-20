@@ -10,11 +10,11 @@ public class main {
 		    }
 		    */
 		    my.add(10);
-		    my.add(8);
 		    my.add(9);
-		    my.RotateLeft(my.root.left);
-		    my.RotateRight(my.root);
-		    System.out.println(my);
+		    my.add(8);
+		    //my.RotateLeft(my.root.left);
+		    my.RotateRight(my.root.left);
+		    System.out.println(my.root.left);
 		    //my.search((int)((Math.random()*10)+1));
 	}
 
