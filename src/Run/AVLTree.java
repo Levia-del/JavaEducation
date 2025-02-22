@@ -33,6 +33,7 @@ public class AVLTree {
 	            curr.right = new AVLTreeNode(value);
 	            setBalancesAndHeights();
 	            size++;
+	            balanceTree();
 	            return;
 	          }
 	        }
@@ -47,6 +48,7 @@ public class AVLTree {
 	            curr.left = new AVLTreeNode(value);
 	            setBalancesAndHeights();
 	            size++;	
+	            balanceTree();
 	            return;
 	          }
 	        }
@@ -104,63 +106,168 @@ public class AVLTree {
 	    postTrav(root);
 	  }
 
-	  public void RotateRight(AVLTreeNode node)
+	  public void RotateRight(AVLTreeNode node, AVLTreeNode parent, boolean isRoot, boolean isLeft)
 	  {
-		  AVLTreeNode LChild = node.left;
-		  if(LChild.right != null)
+		  if(isRoot)
 		  {
-			  node.left = LChild.right;
+			  AVLTreeNode LChild = node.left;
+			  if(LChild.right != null)
+			  {
+				  node.left = LChild.right;
+				  
+			  }
+			  else
+			  {
+				  node.left = null;
+			  }
+		      LChild.right = node;
+		      root = LChild;
+		  }
+		  else
+		  {
+			  AVLTreeNode LChild = node.left;
+			  if(LChild.right != null)
+			  {
+				  node.left = LChild.right;
+				  
+			  }
+			  else
+			  {
+				  node.left = null;
+			  }
 			  
-		  }
-		  else
-		  {
-			  node.left = null;
-		  }
-		  
-		  if(node == root)
-		  {
-		  LChild.right = node;
-		  root = LChild;
-		  }
-		  else
-		  {
-			  AVLTreeNode temp = node;
 			  LChild.right = node;
-			  LChild = temp;
+			  if(isLeft)
+			  {
+				  parent.left = LChild;
+			  }
+			  else
+			  {
+				  parent.right = LChild;
+			  }
 		  }
+		  System.out.println("RotateRight done");
 		  setBalancesAndHeights();
 		  
 	  }
 	  
-	  public void RotateLeft(AVLTreeNode node)
+	  public void RotateLeft(AVLTreeNode node,AVLTreeNode parent, boolean isRoot, boolean isLeft)
 	  {
-		  AVLTreeNode RChild = node.right;
-		  if(RChild.left != null)
+		  if(isRoot)
 		  {
-			  node.right = RChild.left;
+			  AVLTreeNode RChild = node.right;
+			  if(RChild.left != null)
+			  {
+				  node.right = RChild.left;
+				  
+			  }
+			  else
+			  {
+				  node.right = null;
+			  }
 			  
-		  }
-		  else
-		  {
-			  node.right = null;
-		  }
-		  
-		  if(node == root)
-		  {
 			  RChild.left = node;
 			  root = RChild;
 		  }
 		  else {
-		  AVLTreeNode temp = node;
+		   AVLTreeNode RChild = node.right;
+		   if(RChild.left != null)
+		   {
+			   node.right = RChild.left;
+				  
+		   }
+		   else
+		   {
+			   node.right = null;
+		   } 
+		  
+		 
 		  RChild.left = node;
-		  RChild = temp;
+		  if(isLeft)
+		  {
+			  parent.left = RChild;
 		  }
+		  else
+		  {
+			  parent.right = RChild;
+		  }
+		  }
+		  System.out.println("RotateLeft done");
 		  setBalancesAndHeights();
 	  }
 	  
 	  
+	  public void balanceTree()
+	  {
+		  PreOrderCheck(root,null, false);
+	  }
 	  
-	  
+	  public void PreOrderCheck(AVLTreeNode node, AVLTreeNode parent, boolean isLeft)
+	  {
+		  if(node == null)
+		  {
+			  return;
+		  }
+		  if(node==root)
+		  { 
+			  
+			  if(node.balance >1)
+			  {
+				  if(node.right.balance>0)
+				  {
+					  RotateLeft(node,null, true, false);
+				  }
+				  else
+				  {
+					  RotateRight(node.right, node, false, false);
+					  RotateLeft(node,null, true, false);
+				  }
+			  }
+			  else if(node.balance<-1)
+			  {
+				  if(node.left.balance<0)
+				  {
+					  RotateRight(node,null, true, false);
+				  }
+				  else
+				  {
+					  RotateLeft(node.left, node, false, true);
+					  RotateRight(node,null, true, false);
+				  }
+			  }
+		  }
+		  else
+		  {
+			  if(node.balance >1)
+			  {
+				  if(node.right.balance>0)
+				  {
+					  RotateLeft(node,parent, false, isLeft);
+				  }
+				  else
+				  {
+					  RotateRight(node.right, node, false, false);
+					  RotateLeft(node,parent, false, isLeft);
+				  }
+			  }
+			  else if(node.balance<-1)
+			  {
+				  
+				  if(node.left.balance<0)	
+				  {
+					  RotateRight(node,parent, false, isLeft);
+				  }
+				  else
+				  {
+					  RotateLeft(node.left, node, false, true);
+					  RotateRight(node,parent, false, isLeft);
+				  }
+			  }
+		  }
+		  
+		  PreOrderCheck(node.left, node, true);
+		  PreOrderCheck(node.right, node, false);
+	  }
 	  
 	  public void postTrav(AVLTreeNode node)
 	  {
