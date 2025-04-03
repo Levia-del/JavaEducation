@@ -2,7 +2,7 @@ package Run;
 
 public class AdjacencyMatrix {
 
-	private int[][] matrix;
+	 private int[][] matrix;
 	  private int size;
 	  private String print;
 	  private GraphNode[] nodes;
@@ -69,6 +69,8 @@ public class AdjacencyMatrix {
 	    size++;
 	  }
 
+   
+ 
 	  public String toString()
 	  {
 	    updateOrClearChecked();
@@ -104,7 +106,7 @@ public class AdjacencyMatrix {
 	  {
 	    checked[currentNode] = true;
 	   print += nodes[currentNode].getValue()+" ";
-	   for(int i = 0; i<10;i++)
+	   for(int i = 0; i<checked.length;i++)
 	   {
 	     if(matrix[currentNode][i]>0&&!checked[i]) 
 	     {
@@ -159,28 +161,33 @@ public class AdjacencyMatrix {
 	  {
 		  updateOrClearChecked();
 		  updateOrClearCosts();
-		  calculatePaths(0,0);
+		  calculatePaths(0);
 		  return costs;
 	  }
 	  
-	  private void calculatePaths(int current, int cost)
+	  private void calculatePaths(int current)
 	  {
 		  checked[current] = true;
-		  int[] toCheck = new int[10];
-		  for(int i = 0;i<10;i++)
+		  for(int i = 0;i<checked.length;i++)
+		  {
+			  int cost = matrix[current][i];
+			  if(cost>0)
+			  {
+				 cost += costs[current];
+				 if(cost<costs[i])
+				 {
+					 System.out.println("From node "+ current+" to node "+i);
+					 costs[i] = cost;
+				 }
+			  }
+		  }
+		  for(int i = 0;i<checked.length;i++)
 		  {
 			  if(matrix[current][i]>0&&!checked[i])
 			  {
-				  toCheck[i] = 1;
-				  costs[i] = cost+matrix[current][i];
+				  calculatePaths(i);
 			  }
 		  }
-		  for(int i = 0;i<10;i++)
-		   {
-			   if(toCheck[i]==1)
-			   {
-				   calculatePaths(i, matrix[current][i]);
-			   }
-		   }
 	  }
 }
+
