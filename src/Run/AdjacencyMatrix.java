@@ -7,30 +7,12 @@ public class AdjacencyMatrix {
 	  private String print;
 	  private GraphNode[] nodes;
 	  private boolean[] checked;
-	  private int[] costs;
+	  public int[] costs;
 	  private GraphNode firstNode;
 	  
 	  public AdjacencyMatrix()
 	  {
 	    matrix = new int[10][10];
-	    matrix[0][1] = 7;
-	    matrix[0][5] = 1;
-	    matrix[0][8] = 6;
-	    matrix[1][2] = 9;
-	    matrix[1][3] = 7;
-	    matrix[2][0] = 7;
-	    matrix[2][4] = 8;
-	    matrix[3][2] = 2;
-	    matrix[3][6] = 9;
-	    matrix[4][0] = 1;
-	    matrix[4][0] = 1;
-	    matrix[5][1] = 7;
-	    matrix[5][7] = 4;
-	    matrix[6][2] = 9;
-	    matrix[7][4] = 9;
-	    matrix[8][5] = 7;
-	    matrix[8][9] = 2;
-	    matrix[9][2] = 1;
 	   nodes = new GraphNode[10];
 	    size = 0;
 	    print = "";
@@ -57,20 +39,20 @@ public class AdjacencyMatrix {
 	      int r1 = (int)(Math.random()*curr);
 	      int r2 = (int)(Math.random()*curr);
 	      nodes[curr] = new GraphNode(value);
-	      /*if(matrix[curr][r1]==0)
+	      if(matrix[curr][r1]==0)
 	      {
 	        matrix[r1][curr] = (int)(Math.random()*9)+1;
 	      }
 	      if(matrix[r2][curr]==0)
 	      {
 	        matrix[curr][r2] = (int)(Math.random()*9)+1;
-	      }*/
+	      }
 	    }
 	    size++;
 	  }
 
-   
- 
+  
+
 	  public String toString()
 	  {
 	    updateOrClearChecked();
@@ -93,13 +75,14 @@ public class AdjacencyMatrix {
 	    checked = new boolean[size];
 	  }
 
-	  private void updateOrClearCosts()
+	  private void updateOrClearCosts(int startNode)
 	  {
 	    costs = new int[size];
-	    costs[0] = 0;
-	    for(int i =1; i<costs.length;i++)
+	    for(int i =0; i<costs.length;i++)
 	    {
-	    	costs[i] =Integer.MAX_VALUE;
+       
+         costs[i] =0;
+       
 	    }
 	  }
 	  private void DFSTraversal(int currentNode)
@@ -157,14 +140,26 @@ public class AdjacencyMatrix {
 	  }
 
 	
-	  public int[] findShortestPaths()
+	  public void findShortestPathsFrom(int node)
 	  {
 		  updateOrClearChecked();
-		  updateOrClearCosts();
-		  calculatePaths(0);
-		  return costs;
+		  updateOrClearCosts(node);
+		  calculatePaths(node);
+          costs[node]=0;
+          for(int i =0;i<costs.length;i++)
+          {
+             if(i!=node&&costs[i]==0)
+             {
+               costs[i]=-1;
+             }
+          }
 	  }
 	  
+	  public int shortestPath(int from, int to)
+	  {
+		  findShortestPathsFrom(from);
+		  return costs[to];
+	  }
 	  private void calculatePaths(int current)
 	  {
 		  checked[current] = true;
@@ -174,13 +169,13 @@ public class AdjacencyMatrix {
 			  if(cost>0)
 			  {
 				 cost += costs[current];
-				 if(cost<costs[i])
+				 if(cost<costs[i]||costs[i]==0)
 				 {
-					 System.out.println("From node "+ current+" to node "+i);
 					 costs[i] = cost;
 				 }
 			  }
 		  }
+		  
 		  for(int i = 0;i<checked.length;i++)
 		  {
 			  if(matrix[current][i]>0&&!checked[i])

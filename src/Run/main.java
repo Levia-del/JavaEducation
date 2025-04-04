@@ -11,10 +11,6 @@ public class main {
     }
     
     System.out.println(my);
-    int[] ow = my.findShortestPaths();
-    for(int i : ow)
-    {
-    	System.out.println(i+" ");
-    }
+    System.out.println(my.shortestPath(0, 8));
   }
 }
