@@ -223,7 +223,7 @@ public class AdjacencyMatrix {
 		  {
 			  if(i!=node&&matrix[node][i]<matrix[node][maxI])
 			  {
-				  maxI = i;
+				  maxI = i;//no
 			  }
 		  }
 		  return new MSTNode(node,maxI);
