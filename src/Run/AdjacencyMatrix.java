@@ -1,5 +1,6 @@
 package Run;
 
+
 public class AdjacencyMatrix {
 
 	 private int[][] matrix;
@@ -39,16 +40,33 @@ public class AdjacencyMatrix {
 	      int r1 = (int)(Math.random()*curr);
 	      int r2 = (int)(Math.random()*curr);
 	      nodes[curr] = new GraphNode(value);
-	      if(matrix[curr][r1]==0)
+	      int v = (int)(Math.random()*9)+1;
+	      /*if(matrix[r1][curr]==0)
 	      {
-	        matrix[r1][curr] = (int)(Math.random()*9)+1;
+	        matrix[r1][curr] = v;
+	        matrix[curr][r1] = v;
 	      }
-	      if(matrix[r2][curr]==0)
+	      if(matrix[curr][r2]==0)
 	      {
-	        matrix[curr][r2] = (int)(Math.random()*9)+1;
-	      }
+	        matrix[curr][r2] = v;
+	        matrix[r2][curr] = v;
+	        
+	      }*/
 	    }
 	    size++;
+	    for(int r =0;r<size;r++)
+	    {
+	    	for(int c = 0;c<size;c++)
+	    	{
+	    		if(matrix[r][c]==0&&r!=c)
+	    		{
+	    			int v =(int)(Math.random()*9)+1;
+	    			matrix[r][c] = v;
+	    			matrix[c][r] = v;
+	    			
+	    		}
+	    	}
+	    }
 	  }
 
   
@@ -140,7 +158,7 @@ public class AdjacencyMatrix {
 	  }
 
 	
-	  public void findShortestPathsFrom(int node)
+	  private void findShortestPathsFrom(int node)
 	  {
 		  updateOrClearChecked();
 		  updateOrClearCosts(node);
@@ -183,6 +201,32 @@ public class AdjacencyMatrix {
 				  calculatePaths(i);
 			  }
 		  }
+	  }
+	  
+	  
+	  
+	  public MSTNode[] FindMST()
+	  {
+		  MSTNode[] my = new MSTNode[size];
+		  for(int i =0; i<size;i++)
+		  {
+			  my[i] = calcVert(i);
+		  }
+		  return my;
+	  }
+	  
+	  private MSTNode calcVert(int node)
+	  {
+		  
+		  int maxI = 0;
+		  for(int i = 0;i<size;i++)
+		  {
+			  if(i!=node&&matrix[node][i]<matrix[node][maxI])
+			  {
+				  maxI = i;
+			  }
+		  }
+		  return new MSTNode(node,maxI);
 	  }
 }
 
