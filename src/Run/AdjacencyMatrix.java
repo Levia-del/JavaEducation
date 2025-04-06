@@ -3,20 +3,25 @@ package Run;
 
 public class AdjacencyMatrix {
 
-	 private int[][] matrix;
-	  private int size;
-	  private String print;
-	  private GraphNode[] nodes;
-	  private boolean[] checked;
+	public int[][] matrix;
+	 public int size;
+	  public String print;
+	  public GraphNode[] nodes;
+	  public boolean[] checked;
 	  public int[] costs;
-	  private GraphNode firstNode;
+	  public GraphNode firstNode;
+	  //
 	  
 	  public AdjacencyMatrix()
 	  {
 	    matrix = new int[10][10];
 	   nodes = new GraphNode[10];
 	    size = 0;
+	    checked = new boolean[10];
+	    costs = new int[10];
+	    firstNode = null;
 	    print = "";
+	    //
 	  }
 
 	  public void add(int value)
@@ -74,7 +79,6 @@ public class AdjacencyMatrix {
 	  public String toString()
 	  {
 	    updateOrClearChecked();
-	    
 	    DFSTraversal(0);
 	    for(int r =0;r<matrix.length;r++)
 	    {
