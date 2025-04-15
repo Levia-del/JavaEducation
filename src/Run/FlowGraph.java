@@ -3,7 +3,7 @@ package Run;
 public class FlowGraph extends AdjacencyMatrix{
 
 	private FlowCost[][] Fmatrix;
-	
+	private int[] paths = {0};
 	public FlowGraph() {
 		super();
 		Fmatrix = new FlowCost[10][10];
@@ -32,12 +32,12 @@ public class FlowGraph extends AdjacencyMatrix{
 	      int r2 = (int)(Math.random()*curr);
 	      nodes[curr] = new GraphNode(value);
 	      int v = (int)(Math.random()*9)+1;
-	      if(matrix[r1][curr]==0)
+	      if(matrix[curr][r1]==0)
 	      {
 	        matrix[r1][curr] = v;
 	        Fmatrix[r1][curr] = new FlowCost(v);
 	      }
-	      if(matrix[curr][r2]==0)
+	      if(matrix[r2][curr]==0)
 	      {
 	        matrix[curr][r2] = v;
 	        Fmatrix[curr][r2] = new FlowCost(v);
@@ -53,7 +53,10 @@ public class FlowGraph extends AdjacencyMatrix{
 	    {
 	      for(int c = 0; c<Fmatrix[0].length;c++)
 	      {
+	    	if(Fmatrix[r][c]!=null)
+			{
 	    	  Fmatrix[r][c].setCF(0);
+			}
 	      }
 	    }
 	}
@@ -62,16 +65,81 @@ public class FlowGraph extends AdjacencyMatrix{
 	{
 		clearFlow();
 		int c = 0;
-		int[] my = trav(0,size-1);
-		while(my!=null)
+		while(paths[0]!=-1)
 		{
-			
+			int f = trav(); 
+			System.out.println(f);
+			for(int i =0;i<size;i++)
+			{
+				for(int j =0;j<size;j++)
+				{
+					if(Fmatrix[i][j]!=null)
+					{
+						Fmatrix[i][j].setCF(Fmatrix[i][j].cf+f);
+					}
+				}
+			}
+		  c += f;
 		}
+		
 		return c;
 	}
 	
-	private int[] trav(int from, int to)
+	private int trav()
 	{
-		return null;
+	 
+	  int[] my = super.GetAFilledArray(size, -1);
+	  int c =Fmatrix[0][1].maxFill();
+	  int index = 0;
+	  int lastI = 0;
+	  for(int i =0;i<size;i++)
+	  {
+		  if(Fmatrix[index][i]!=null)
+		  {
+			  if(!Fmatrix[index][i].isFilled())
+			  {
+				  my[index] = i;
+				  if(Fmatrix[index][i].maxFill()<c)
+				  {
+					  c =Fmatrix[index][i].maxFill();
+				  }
+				  lastI = i;
+				  index++;
+				  i =0;
+			  }
+		  }
+		  else if(i==size-1&&index!=size-1)
+		  {
+			  index--;
+			  if(index<0)
+			  {
+				  paths[0] = -1;
+				  return 0;
+				  
+			  }
+			  i =lastI+1;
+		  }
+		  
+	  }
+	  
+	  paths = my;
+	  return c;
+	}
+	
+	public String toString()
+	{
+		String re = "";
+		for(int i =0;i<size;i++)
+		{
+			for(int j =0;j<size;j++)
+			{
+				FlowCost l = Fmatrix[i][j];
+				if(l!=null) {
+				re += "From "+i+" to "+j+" with "+l+"\n";
+				
+				}
+			}
+		}
+		return re;
 	}
 }

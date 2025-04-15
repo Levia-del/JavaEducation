@@ -1,8 +1,8 @@
 package Run;
 
 public class FlowCost {
-   int cf;
-   int mf;
+   public int cf;
+   public int mf;
    
    public FlowCost(int mf)
    {
@@ -12,5 +12,20 @@ public class FlowCost {
    public void setCF(int cf)
    {
 	   this.cf = cf;
+   }
+   
+   public int maxFill()
+   {
+	   return mf-cf;
+   }
+   
+   public boolean isFilled()
+   {
+	   return cf<mf;
+   }
+   
+   public String toString()
+   {
+	   return cf+"/"+mf;
    }
 }

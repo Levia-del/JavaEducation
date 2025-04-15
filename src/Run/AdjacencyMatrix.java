@@ -67,7 +67,7 @@ public class AdjacencyMatrix {
 	    		{
 	    			int v =(int)(Math.random()*9)+1;
 	    			matrix[r][c] = v;
-	    			matrix[c][r] = v;
+	    			//matrix[c][r] = v;
 	    			
 	    		}
 	    	}
@@ -97,6 +97,18 @@ public class AdjacencyMatrix {
 	    checked = new boolean[size];
 	  }
 
+	  
+	  
+	  public int[] GetAFilledArray(int size, int numb)
+	  {
+		  int[] my = new int[size];
+		  for(int i = 0; i<size;i++)
+		  {
+			  my[i] = numb;
+		  }
+		  return my;
+	  }
+	  
 	  private void updateOrClearCosts(int startNode)
 	  {
 	    costs = new int[size];
