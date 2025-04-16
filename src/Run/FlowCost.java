@@ -21,7 +21,7 @@ public class FlowCost {
    
    public boolean isFilled()
    {
-	   return cf<mf;
+	   return !(cf<mf);
    }
    
    public String toString()

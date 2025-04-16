@@ -24,6 +24,25 @@ public class AdjacencyMatrix {
 	    //
 	  }
 
+	  
+	  public void printGraph(MSTNode[] my)
+	  {
+		  for(MSTNode i : my)
+		  {
+			  System.out.println(i);
+		  }
+		  System.out.println();
+	  }
+	  
+	  public void printGraph(int[] my)
+	  {
+		  for(int i : my)
+		  {
+			  System.out.println(i);
+		  }
+		  System.out.println();
+	  }
+	  
 	  public void add(int value)
 	  {
 	    if(firstNode == null)
@@ -105,6 +124,16 @@ public class AdjacencyMatrix {
 		  for(int i = 0; i<size;i++)
 		  {
 			  my[i] = numb;
+		  }
+		  return my;
+	  }
+	  
+	  public MSTNode[] GetAFilledArray(int size, int node, int link)
+	  {
+		  MSTNode[] my = new MSTNode[size];
+		  for(int i = 0; i<size;i++)
+		  {
+			  my[i] = new MSTNode(node, link);
 		  }
 		  return my;
 	  }

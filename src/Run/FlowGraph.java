@@ -3,7 +3,7 @@ package Run;
 public class FlowGraph extends AdjacencyMatrix{
 
 	private FlowCost[][] Fmatrix;
-	private int[] paths = {0};
+	private MSTNode[] paths = {new MSTNode(0,1)};
 	public FlowGraph() {
 		super();
 		Fmatrix = new FlowCost[10][10];
@@ -15,6 +15,7 @@ public class FlowGraph extends AdjacencyMatrix{
 		if(firstNode == null)
 	    {
 	      firstNode = new GraphNode(value);
+	      size++;
 	      nodes[0] = firstNode;
 	    }
 	    else
@@ -28,11 +29,11 @@ public class FlowGraph extends AdjacencyMatrix{
 	          throw new IndexOutOfBoundsException();
 	        }
 	      }
-	      int r1 = (int)(Math.random()*curr);
-	      int r2 = (int)(Math.random()*curr);
+	     // int r1 = (int)(Math.random()*curr);
+	     // int r2 = (int)(Math.random()*curr);
 	      nodes[curr] = new GraphNode(value);
 	      int v = (int)(Math.random()*9)+1;
-	      if(matrix[curr][r1]==0)
+	     /* if(matrix[curr][r1]==0)
 	      {
 	        matrix[r1][curr] = v;
 	        Fmatrix[r1][curr] = new FlowCost(v);
@@ -41,9 +42,22 @@ public class FlowGraph extends AdjacencyMatrix{
 	      {
 	        matrix[curr][r2] = v;
 	        Fmatrix[curr][r2] = new FlowCost(v);
-	      } 
+	      } */
+	      size++;
+	      for(int i = 0;i<size-1;i++)
+	      {
+	    	  for(int j = i+1;j<size;j++)
+		      {
+	    		matrix[i][j] = v;
+	  	        Fmatrix[i][j] = new FlowCost(v);
+	  	      v = (int)(Math.random()*9)+1;
+	  	      
+		      }
+		      
+	      }
+	      
 	    }
-		size++;
+		
     }
 	
 	
@@ -65,68 +79,79 @@ public class FlowGraph extends AdjacencyMatrix{
 	{
 		clearFlow();
 		int c = 0;
-		while(paths[0]!=-1)
+		int f = 0; 
+		while(paths[0].link!=-1)
 		{
-			int f = trav(); 
-			System.out.println(f);
-			for(int i =0;i<size;i++)
-			{
-				for(int j =0;j<size;j++)
-				{
-					if(Fmatrix[i][j]!=null)
-					{
-						Fmatrix[i][j].setCF(Fmatrix[i][j].cf+f);
-					}
-				}
-			}
-		  c += f;
+		 super.printGraph(paths);
+		 for(MSTNode i : paths)
+		 {
+			 if(i!=null)
+			 {
+				 Fmatrix[i.node][i.link].setCF(Fmatrix[i.node][i.link].cf+f);
+			 }
+		 }
+		   c += f;
+		   ToString();
+		   f =trav();
+		   //System.out.println(paths[0]);
 		}
-		
+		//thidfndsf
 		return c;
 	}
 	
 	private int trav()
 	{
 	 
-	  int[] my = super.GetAFilledArray(size, -1);
+	  paths = super.GetAFilledArray(size, -1, 0);
 	  int c =Fmatrix[0][1].maxFill();
 	  int index = 0;
 	  int lastI = 0;
+	  
 	  for(int i =0;i<size;i++)
 	  {
-		  if(Fmatrix[index][i]!=null)
+		  
+		  if(Fmatrix[lastI][i]!=null)
 		  {
-			  if(!Fmatrix[index][i].isFilled())
+			  
+			  if(!Fmatrix[lastI][i].isFilled())
 			  {
-				  my[index] = i;
-				  if(Fmatrix[index][i].maxFill()<c)
+				  //System.out.println(i);
+				  paths[index] = new MSTNode(lastI,i);
+				  if(Fmatrix[lastI][i].maxFill()<c)
 				  {
-					  c =Fmatrix[index][i].maxFill();
+					  c =Fmatrix[lastI][i].maxFill();
 				  }
 				  lastI = i;
 				  index++;
 				  i =0;
 			  }
 		  }
-		  else if(i==size-1&&index!=size-1)
+		  if(i==size-1&&index!=size-1)
 		  {
+			  paths[index] = new MSTNode(-1, -1);
 			  index--;
 			  if(index<0)
 			  {
-				  paths[0] = -1;
+				  paths[0].link = -1;
 				  return 0;
 				  
 			  }
 			  i =lastI+1;
+			  lastI --;
 		  }
-		  
+		 
 	  }
-	  
-	  paths = my;
+	  for(int i =0;i<size;i++)
+	  {
+		if(paths[i].node==-1)
+		{
+			paths[i] = null;
+		}
+	  }
 	  return c;
 	}
 	
-	public String toString()
+	public void ToString()
 	{
 		String re = "";
 		for(int i =0;i<size;i++)
@@ -140,6 +165,6 @@ public class FlowGraph extends AdjacencyMatrix{
 				}
 			}
 		}
-		return re;
+		System.out.println(re);;
 	}
 }
