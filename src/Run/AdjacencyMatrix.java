@@ -8,7 +8,7 @@ public class AdjacencyMatrix {
 	  public String print;
 	  public GraphNode[] nodes;
 	  public boolean[] checked;
-	  public int[] costs;
+	  public Path[] paths;
 	  public GraphNode firstNode;
 	  //
 	  
@@ -18,7 +18,6 @@ public class AdjacencyMatrix {
 	   nodes = new GraphNode[10];
 	    size = 0;
 	    checked = new boolean[10];
-	    costs = new int[10];
 	    firstNode = null;
 	    print = "";
 	    //
@@ -42,7 +41,25 @@ public class AdjacencyMatrix {
 		  }
 		  System.out.println();
 	  }
-	  
+
+    public void printGraph(boolean[] my)
+	  {
+		  for(boolean i : my)
+		  {
+			  System.out.println(i);
+		  }
+		  System.out.println();
+	  }
+
+
+    public void printGraph(double[] my)
+	  {
+		  for(double i : my)
+		  {
+			  System.out.println(i);
+		  }
+		  System.out.println();
+	  }
 	  public void add(int value)
 	  {
 	    if(firstNode == null)
@@ -111,7 +128,7 @@ public class AdjacencyMatrix {
 	    return print;
 	  }
 
-	  private void updateOrClearChecked()
+	  public void updateOrClearChecked()
 	  {
 	    checked = new boolean[size];
 	  }
@@ -138,13 +155,13 @@ public class AdjacencyMatrix {
 		  return my;
 	  }
 	  
-	  private void updateOrClearCosts(int startNode)
+	  public void updateOrClearPaths()
 	  {
-	    costs = new int[size];
-	    for(int i =0; i<costs.length;i++)
+	    paths = new Path[size];
+	    for(int i =0; i<paths.length;i++)
 	    {
        
-         costs[i] =0;
+         paths[i] = new Path();
        
 	    }
 	  }
@@ -206,22 +223,22 @@ public class AdjacencyMatrix {
 	  private void findShortestPathsFrom(int node)
 	  {
 		  updateOrClearChecked();
-		  updateOrClearCosts(node);
+		  updateOrClearPaths();
 		  calculatePaths(node);
-          costs[node]=0;
-          for(int i =0;i<costs.length;i++)
-          {
-             if(i!=node&&costs[i]==0)
-             {
-               costs[i]=-1;
-             }
-          }
+          paths[node]=null;
 	  }
 	  
 	  public int shortestPath(int from, int to)
 	  {
 		  findShortestPathsFrom(from);
-		  return costs[to];
+		  return calculateCost(to);
+	  }
+	  
+	  public void printShortestPath(int from, int to)
+	  {
+		  int c = shortestPath(from, to);
+		  System.out.println(paths[to]);
+		  System.out.println("The cost of the shortest path is "+c);
 	  }
 	  private void calculatePaths(int current)
 	  {
@@ -231,10 +248,11 @@ public class AdjacencyMatrix {
 			  int cost = matrix[current][i];
 			  if(cost>0)
 			  {
-				 cost += costs[current];
-				 if(cost<costs[i]||costs[i]==0)
+				 cost += calculateCost(current);
+				 if(cost<calculateCost(i)||calculateCost(i)==0)
 				 {
-					 costs[i] = cost;
+					 paths[i] = copyList(paths[current]);
+					 paths[i].add(new MSTNode(current, i));
 				 }
 			  }
 		  }
@@ -247,7 +265,30 @@ public class AdjacencyMatrix {
 			  }
 		  }
 	  }
-	  
+
+
+    private Path copyList(Path ol)
+    {
+     Path my = new Path();
+      for(MSTNode i : ol.getList())
+      {
+        my.add(i);
+          
+      }
+      return my;
+    }
+  
+   private int calculateCost(int index)
+   {
+    Path my = paths[index];
+     int c = 0;
+     for(MSTNode i : my.getList())
+     {
+       c += matrix[i.node][i.link];
+      
+     }
+     return c;
+   }
 	  
 	  
 	  public MSTNode[] FindMST()
@@ -274,4 +315,3 @@ public class AdjacencyMatrix {
 		  return new MSTNode(node,maxI);
 	  }
 }
-
