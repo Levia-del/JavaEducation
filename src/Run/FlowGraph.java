@@ -2,9 +2,12 @@ package Run;
 public class FlowGraph extends AdjacencyMatrix{
 
 	private FlowCost[][] Fmatrix;
+	private Path aPath;
 	public FlowGraph() {
 		super();
 		Fmatrix = new FlowCost[10][10];
+		
+		aPath = new Path();
 	}
 
 	public void add(int value)
@@ -76,14 +79,13 @@ public class FlowGraph extends AdjacencyMatrix{
 	public int maximumFlow()
 	{
 		clearFlow();
+		updateOrClearChecked();
 		int c = 0;
 		int f = Integer.MAX_VALUE; 
-		findShortestPathsFrom(0);
-		while(paths[size-1].getList().size()>0)
+		aPath.clear();
+		DFSTraversal(0);
+		while(aPath.size()>0)
 		{
-			 
-			 
-			Path aPath = paths[size-1];
 			
 			for(MSTNode i : aPath.getList())
 			{
@@ -107,110 +109,84 @@ public class FlowGraph extends AdjacencyMatrix{
 				}
 			}
 			c += f;
-			System.out.println("f = "+f);
+			//System.out.println("f = "+f);
+			System.out.println(aPath);
+			//System.out.println();
+		    /*System.out.println();*/
 			f = Integer.MAX_VALUE; 
-			printShortestPath(0,size-1);
-			System.out.println();
+			
+			
+			aPath.clear();
+			updateOrClearChecked();
+			
+			DFSTraversal(0);
+			if(aPath.size()>0)
+			{
+		    MSTNode first = aPath.get(0);
+			MSTNode last = aPath.get(aPath.size()-1);
+			while(last.link!=size-1)
+			{
+				Fmatrix[first.node][first.link].fill();
+				aPath.clear();
+				updateOrClearChecked();
+				
+				DFSTraversal(0);
+				if(aPath.size()>0)
+				{
+				first = aPath.get(0);
+				last = aPath.get(aPath.size()-1);
+				}
+				else
+				{
+					break;
+				}
+				
+				
+			}
+			
+			}
 			
 			
 		}
 
 		return c;
 	}
-
-	private void findShortestPathsFrom(int node)
-	  {
-		  updateOrClearChecked();
-		  updateOrClearPaths();
-		  calculatePaths(node);
-        paths[node]=null;
-	  }
 	  
-	  public int shortestPath(int from, int to)
-	  {
-		  findShortestPathsFrom(from);
-		  return calculateCost(to);
-	  }
-	  
-	  public void printShortestPath(int from, int to)
-	  {
-		  int c = shortestPath(from, to);
-		  if(paths[to].getList().size()>0)
-		  {
-			  System.out.println(paths[to]);
-			  System.out.println("The cost of the shortest path is "+c); 
-		  }
-		  
-	  }
-	  private void calculatePaths(int current)
-	  {
-		  checked[current] = true;
-		  for(int i = 0;i<checked.length;i++)
-		  {
-			  System.out.println("Checked from: "+current+" to "+ i);
-			  int cost = matrix[current][i];
-			  if(cost>0&&!Fmatrix[current][i].isFilled())
-			  {
-				 cost += calculateCost(current);
-				 if(cost<calculateCost(i)||calculateCost(i)==0)
-				 {
-					 paths[i] = copyList(paths[current]);
-					 paths[i].add(new MSTNode(current, i));
-					 if(paths[size-1].getList().size()>0) {
-					 System.out.println();
-				     for(int m = 0; m<5;m++)
-				     {
-				    	 System.out.println("To: "+m);
-				    	 for(MSTNode k : paths[m].getList())
-						 {
-					    	 System.out.println(k);
-					    	 
-						 }
-				    	 
-				     }
-				     
-					 System.out.println();
-					 }
-				 }
-			  }
-		  }
-		  
-		  for(int i = 0;i<checked.length;i++)
-		  {
-			  if(matrix[current][i]>0&&!checked[i])
-			  {
-				  calculatePaths(i);
-			  }
-		  }
-	  }
+	 
+	private void DFSTraversal(int currentNode) {
+		checked[currentNode] = true;
+		//System.out.println(currentNode);
+		
+		if(currentNode == size-1)
+		{
+			checkEverything();
+			return;
+		}
+		for (int i = 0; i < checked.length; i++) {
+			if (matrix[currentNode][i] > 0 && !checked[i]&&!Fmatrix[currentNode][i].isFilled()) {
+				
+				checked[i] = true;
+				
+				aPath.add(new MSTNode(currentNode,i));
+				DFSTraversal(i);
+			}
+		}
+	}
 
-
-  private Path copyList(Path ol)
-  {
-   Path my = new Path();
-    for(MSTNode i : ol.getList())
-    {
-      my.add(i);
-        
-    }
-    return my;
-  }
-
- private int calculateCost(int index)
- {
-  Path my = paths[index];
-   int c = 0;
-   for(MSTNode i : my.getList())
-   {
-     c += matrix[i.node][i.link];
-    
-   }
-   return c;
- }
 
 	
-
-
+	
+	
+	private void checkEverything()
+	{
+		for(int i = 0;i<checked.length;i++)
+		{
+			
+			checked[i] = true;
+		}
+		
+	}
+	
 	public void ToString()
 	{
 		String re = "";

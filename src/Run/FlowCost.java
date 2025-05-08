@@ -28,4 +28,9 @@ public class FlowCost {
    {
 	   return cf+"/"+mf;
    }
+   
+   public void fill()
+   {
+	   cf = mf;
+   }
 }

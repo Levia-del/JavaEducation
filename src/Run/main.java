@@ -6,13 +6,21 @@ public class main {
 		
 	FlowGraph my = new FlowGraph();
     
-    for(int i =0;i<=4;i++)
+    for(int i =0;i<=9;i++)
     {
       my.add(i);
     }
 	
     System.out.println(my);
     System.out.println(my.maximumFlow());
-	;
+		
+	/*AdjacencyMatrix my = new AdjacencyMatrix();
+	for(int i =0;i<=9;i++)
+    {
+      my.add(i);
+    }
+	System.out.println(my);
+	my.printShortestPath(0, 9);*/
+    
   }
 }

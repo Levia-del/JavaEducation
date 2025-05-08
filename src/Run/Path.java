@@ -25,6 +25,27 @@ public class Path
     	return my;
     }
     
+    
+    
+    public void clear()
+    {
+    	my = new LinkedList<MSTNode>();
+    	
+    }
+    
+    public int size()
+    {
+    	return my.size();
+    	
+    }
+    
+    
+    
+    public MSTNode get(int i)
+    {
+    	return my.get(i);
+    	
+    }
     public String toString()
     {
      String re = "";
