@@ -42,7 +42,9 @@ public class Algorithms {
 	
 	public static String huffman(String s)
 	{
-		final class HNode{
+		
+		
+		 class HNode{
 			private String l;
 			private int count;
 			
@@ -78,21 +80,35 @@ public class Algorithms {
 			}
 		}
 		
-		
+		 class TNode{
+			int frequ;
+			HNode value;
+			TNode left;
+			
+			TNode right;
+			public TNode(HNode value, TNode left, TNode right)
+			{
+				
+				this.value = value;
+				this.left  = left;
+				this.right =right;
+			}
+			
+		}
 		
 	  ArrayList<HNode> my = new ArrayList<HNode>();
 	  for(int i  = 0; i<s.length();i++)
 	  {
+		  
 		  boolean a = true;
 		  for(int j = 0; j<my.size();j++)
 		  {
-			  
 			  if(my.get(j).getLetter().equals(s.substring(i,i+1)))
 			  {
-				  
 				  my.get(j).increment();
+				  
 				  int k = j;
-				  while(k>0&&my.get(k).getCount()>my.get(k-1).getCount())
+				  while(k>0&&my.get(k).getCount()<my.get(k-1).getCount())
 				  {
 					  
 					  HNode temp = my.get(k);
@@ -102,6 +118,7 @@ public class Algorithms {
 				  }
 				  a = false;
 				  
+				  
 				  break;
 			  }
 		  }
@@ -109,31 +126,32 @@ public class Algorithms {
 		  {
 			  
 			  my.add(new HNode(s.substring(i,i+1)));
+			  for(int j = 0; j<my.size();j++)
+			  {
+				  int k = j;
+				  while(k>0&&my.get(k).getCount()<my.get(k-1).getCount())
+				  {
+					  
+					  HNode temp = my.get(k);
+					  my.set(k, my.get(k-1));
+					  my.set(k-1, temp);
+					  k--;
+				  }
+			  }
 		  }
 		  
+		  
 	  }
-	  
+	  while(my.size()>1) {
+		  TNode left = new TNode(my.remove(0);
+		  TNode right = new TNode(my.remove(0);
+		  T
+		  
+	  }
 	  
 	  String resu = "";
-	  for(int i = 0; i<s.length();i++)
-	  {
-		  
-		  String t ="";
-		  for(HNode j : my)
-		  {
-			  if(j.getLetter().equals(s.substring(i,i+1))&&j!=my.get(my.size()-1))
-			  {
-				  t+="0";
-				  break;
-			  }
-			  else
-			  {
-				  t+="1";
-			  }
-		  }
-		  resu += t+" ";
-	  }
 	  
+	
 	  
 	return resu;
 	}
