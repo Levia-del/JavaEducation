@@ -15,6 +15,15 @@ public class main {
     System.out.println(my.maximumFlow());*/
 		
 	
-	System.out.println(Algorithms.huffman("lossless"));
+	//System.out.println(Algorithms.huffman("pneumonoultram"));
+		
+		
+	AdjacencyMatrix my = new AdjacencyMatrix();
+	for(int i =0;i<=4;i++)
+    {
+      my.add(0);
+    }
+	 System.out.println(my);
+    System.out.println(Algorithms.TravelingSalesman(my));
 	}
 }

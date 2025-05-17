@@ -78,7 +78,7 @@ public class AdjacencyMatrix {
 				if (matrix[r][c] == 0 && r != c) {
 					int v = (int) (Math.random() * 9) + 1;
 					matrix[r][c] = v;
-					// matrix[c][r] = v;
+					matrix[c][r] = v;
 
 				}
 			}
