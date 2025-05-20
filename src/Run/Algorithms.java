@@ -154,6 +154,7 @@ public class Algorithms {
 	public static int TravelingSalesman(AdjacencyMatrix my)
 	{
 		MSTNode[] shortest = new MSTNode[my.size];
+		boolean[] checked = new boolean[my.size];
 		for(int i = 0; i<my.size;i++)
 		{
 			shortest[i] = new MSTNode(0,1);
@@ -175,14 +176,70 @@ public class Algorithms {
 			my.matrix[m.node][m.link] =Integer.MAX_VALUE;
 			my.matrix[m.link][m.node] =Integer.MAX_VALUE;
 		}
-		for(int i = 0; i<my.size;i++)
+		for(int i =0;i<shortest.length;i++)
 		{
-		
+			
 			System.out.println(shortest[i]);
 		}
+		
+		AdjacencyMatrix mi = new AdjacencyMatrix();
+		for(int i =1;i<=my.size;i++)
+	    {
+	      mi.add(0);
+	    }
+		mi.matrix = new int[my.size][my.size];
+		for(MSTNode i : shortest)
+		{
+			mi.matrix[i.node][i.link] = my.matrix[i.node][i.link];
+			
+		}
+		int[] defects = getDefects(mi);
+		
+		for(int i =0;i<defects.length;i++)
+		{
+			
+			System.out.println(defects[i]);
+		}
+		
+		
 		
 		
 		return 0;
 	}
 	
+	
+	private static int[] getDefects(AdjacencyMatrix my)
+	{
+		
+		ArrayList<Integer> mi = new ArrayList<Integer>();
+		
+		for(int c =0;c<my.size;c++)
+		{
+			int count = 0;
+			for(int r =0;r<my.size;r++)
+			{
+				if(my.matrix[r][c]>0)
+				{
+					
+					count++;
+				}
+			}
+			if(count>2)
+			{
+				
+				mi.add(c);
+			}
+			
+		}
+		
+		int[] mo = new int[mi.size()];
+		
+		for(int i = 0; i< mi.size();i++)
+		{
+			
+			mo[i] = mi.get(i);
+		}
+		
+		return mo;
+	}
 }

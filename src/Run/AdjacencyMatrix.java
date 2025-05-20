@@ -88,9 +88,10 @@ public class AdjacencyMatrix {
 	public String toString() {
 		updateOrClearChecked();
 		DFSTraversal(0);
-		for (int r = 0; r < matrix.length; r++) {
-			for (int c = 0; c < matrix[0].length; c++) {
-				System.out.print(matrix[r][c] + " ");
+		for (int r = 0; r < size; r++) {
+			System.out.print("{");
+			for (int c = 0; c < size; c++) {
+				System.out.print(matrix[r][c] + ", ");
 			}
 			System.out.print("\n");
 		}
