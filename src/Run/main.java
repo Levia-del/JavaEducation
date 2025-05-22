@@ -24,6 +24,14 @@ public class main {
       my.add(0);
     }
 	 System.out.println(my);
-    System.out.println(Algorithms.TravelingSalesman(my));
+    int [] mi = Algorithms.GreedyTSP(my);
+    
+    
+    
+    for(int i = 0;i<mi.length;i++)
+    {
+    	
+    	System.out.println(mi[i]);
+    }
 	}
 }
