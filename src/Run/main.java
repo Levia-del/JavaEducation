@@ -24,14 +24,11 @@ public class main {
       my.add(0);
     }
 	 System.out.println(my);
-    int [] mi = Algorithms.GreedyTSP(my);
+	 
+    Sorts.getAnyArray(Algorithms.BruteTSP(my));
     
     
     
-    for(int i = 0;i<mi.length;i++)
-    {
-    	
-    	System.out.println(mi[i]);
-    }
+    
 	}
 }

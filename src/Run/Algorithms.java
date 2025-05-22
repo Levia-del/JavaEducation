@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Algorithms {
 
 	private static String Hcode;
-
+    private static ArrayList<Path> paths = new ArrayList<Path>();
+	
 	public static int gcd(int a, int b) {
 		if (b > a) {
 			int t = a;
@@ -106,7 +107,7 @@ public class Algorithms {
 		return resu;
 	}
 
-	public static void preOrderTraversal(HNode node, String code, String toSearch) {
+	private static void preOrderTraversal(HNode node, String code, String toSearch) {
 
 		if (node == null) {
 
@@ -125,31 +126,22 @@ public class Algorithms {
 
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	private static boolean done(boolean[] my) 
-	{
-		
-		for(int i=0;i<my.length;i++)
-		{
-			
-			if(my[i])
-			{
-				
+	private static boolean done(boolean[] my) {
+
+		for (int i = 0; i < my.length; i++) {
+
+			if (!my[i]) {
+
 				return false;
 			}
 		}
 		return true;
 	}
+
 	
+
 	public static int[] GreedyTSP(AdjacencyMatrix my) {
-		int[] paths = new int[my.size+1];
+		int[] paths = new int[my.size + 1];
 		int curr = 0;
 
 		paths[0] = 0;
@@ -168,21 +160,90 @@ public class Algorithms {
 				}
 			}
 			paths[count] = mI;
-			count++;
+
 			curr = mI;
 
 			checked[curr] = true;
-			if(count == my.size-1)
-			{
-				
-				checked[my.size-1] = true;
+			if (count == my.size - 1) {
+
+				checked[my.size - 1] = true;
 			}
-			Sorts.getAnyArray(paths);
+			count++;
+			/*
+			 * Sorts.getAnyArray(paths); System.out.println("count = "+count);
+			 * System.out.println("curr = "+curr); System.out.println(done(checked));
+			 */
 		}
 		paths[my.size] = 0;
 		return paths;
 	}
 
+	
+	
+	
+	
+	
+	public static int[] BruteTSP(AdjacencyMatrix my)
+	{
+		for(int i = 1;i<my.size;i++)
+		{
+			
+			
+			
+			
+			DFSTraversal(my, new boolean[my.size], new ArrayList<MSTNode>(), i);
+		}
+		
+		
+		
+		
+		
+		return new int[]{0};
+		
+	}
+	
+	
+	
+	private static void DFSTraversal(AdjacencyMatrix my, boolean[] checked, ArrayList<MSTNode> path, int curr)
+	{
+		
+		if(path.size()==0)
+		{
+			
+			path.add(new MSTNode(0, curr));
+			
+			checked[0] = true;
+		}
+		else
+		{
+			
+			path.add(new MSTNode(path.get(path.size()-1).link, curr));
+			checked[curr] = true;
+		}
+		
+			
+		if(done(checked))
+		{
+			
+			paths.add(new Path(path));
+			return;
+		}
+		
+		
+			for(int i = 0;i<my.size;i++)
+			{
+				
+				if(i!=curr&&!checked[i])
+				{
+					
+					DFSTraversal(my, checked,path, i);
+				}
+			}
+			
+		
+	}
+	
+	
 	public static int[] TravelingSalesman(AdjacencyMatrix my) {
 		MSTNode[] shortest = new MSTNode[my.size];
 		boolean[] checked = new boolean[my.size];
