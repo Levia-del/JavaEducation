@@ -5,8 +5,11 @@ import java.util.ArrayList;
 public class Algorithms {
 
 	private static String Hcode;
-    private static ArrayList<Path> paths = new ArrayList<Path>();
+	private static ArrayList<Path> paths = new ArrayList<Path>();
 	
+	
+	private static int uc = 0;;
+
 	public static int gcd(int a, int b) {
 		if (b > a) {
 			int t = a;
@@ -138,8 +141,6 @@ public class Algorithms {
 		return true;
 	}
 
-	
-
 	public static int[] GreedyTSP(AdjacencyMatrix my) {
 		int[] paths = new int[my.size + 1];
 		int curr = 0;
@@ -178,72 +179,98 @@ public class Algorithms {
 		return paths;
 	}
 
-	
-	
-	
-	
-	
-	public static int[] BruteTSP(AdjacencyMatrix my)
-	{
-		for(int i = 1;i<my.size;i++)
-		{
-			
-			
-			
-			
+	public static Path BruteTSP(AdjacencyMatrix my) {
+		for (int i = 1; i < my.size; i++) {
+
 			DFSTraversal(my, new boolean[my.size], new ArrayList<MSTNode>(), i);
 		}
-		
-		
-		
-		
-		
-		return new int[]{0};
-		
-	}
-	
-	
-	
-	private static void DFSTraversal(AdjacencyMatrix my, boolean[] checked, ArrayList<MSTNode> path, int curr)
-	{
-		
-		if(path.size()==0)
-		{
-			
-			path.add(new MSTNode(0, curr));
-			
-			checked[0] = true;
+
+		int maxix = Integer.MAX_VALUE;
+		int k = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			int sumss = calculatePathSumsTSP(my, paths.get(i));
+			if(sumss<maxix)
+			{
+				maxix = sumss;
+				k = i;
+			}
 		}
-		else
+
+		return paths.get(k);
+
+	}
+
+	
+	
+	
+	private static int calculatePathSumsTSP(AdjacencyMatrix my, Path mi)
+	{
+		int sumss = 0;
+		for(MSTNode i : mi.getList())
 		{
 			
-			path.add(new MSTNode(path.get(path.size()-1).link, curr));
+			sumss += my.matrix[i.node][i.link];
+		}
+		return sumss;
+	}
+	private static void DFSTraversal(AdjacencyMatrix my, boolean[] checked, ArrayList<MSTNode> path, int curr) {
+
+		if (path.size() == 0) {
+
+			path.add(new MSTNode(0, curr));
+
+			checked[0] = true;
+			checked[curr] = true;
+		} else {
+
+			path.add(new MSTNode(path.get(path.size() - 1).link, curr));
 			checked[curr] = true;
 		}
-		
-			
-		if(done(checked))
-		{
-			
+
+		/*
+		 * System.out.println(); System.out.print("checked =");
+		 * 
+		 * 
+		 * 
+		 * Sorts.getAnyArray(checked);
+		 * 
+		 * System.out.println("path = "+path);
+		 * 
+		 * System.out.println("curr = "+curr);
+		 * 
+		 * System.out.println("Is gonna finish = "+done(checked));
+		 */
+		if (done(checked)) {
+
+			path.add(new MSTNode(curr,0));
 			paths.add(new Path(path));
 			return;
 		}
+
 		
-		
-			for(int i = 0;i<my.size;i++)
-			{
-				
-				if(i!=curr&&!checked[i])
+		for (int i = 0; i < my.size; i++) {
+
+			
+			if (i != curr && !checked[i]) {
+				boolean[] nChecked = new boolean[my.size];
+				for(int j =0;j<my.size;j++)
 				{
 					
-					DFSTraversal(my, checked,path, i);
+					nChecked[j] = checked[j];
 				}
+				
+				ArrayList<MSTNode> mi = new ArrayList<MSTNode>(path);
+				
+				
+				DFSTraversal(my, nChecked, mi, i);
+				
+				//System.out.println("i = "+i);
 			}
-			
-		
+		}
+		return;
+
 	}
-	
-	
+
 	public static int[] TravelingSalesman(AdjacencyMatrix my) {
 		MSTNode[] shortest = new MSTNode[my.size];
 		boolean[] checked = new boolean[my.size];

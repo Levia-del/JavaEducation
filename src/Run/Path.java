@@ -45,11 +45,21 @@ public class Path {
 	public String toString() {
 		String re = "";
 		re += my.get(0).node + " -> " + my.get(0).link;
+		if(my.size()>2) {
 		for (int i = 1; i < my.size() - 1; i++) {
+			
 			re += " -> " + my.get(i).link;
 
 		}
-		re += " -> "+my.get(my.size() - 1).link;
+		}
+		if(my.size()>1)
+		{
+			
+			re += " -> "+my.get(my.size() - 1).link;
+			
+			
+		}
+		
 
 		return re;
 	}

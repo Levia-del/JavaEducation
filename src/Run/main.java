@@ -1,5 +1,7 @@
 package Run;
 
+
+
 public class main {
 
 	public static void main(String[] args) {
@@ -25,7 +27,9 @@ public class main {
     }
 	 System.out.println(my);
 	 
-    Sorts.getAnyArray(Algorithms.BruteTSP(my));
+	 
+	 
+	 System.out.println(Algorithms.BruteTSP(my));
     
     
     
