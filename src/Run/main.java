@@ -25,12 +25,22 @@ public class main {
     {
       my.add(0);
     }
-	 System.out.println(my);
+	
+	System.out.println(my);
 	 
+	 Path mi = Algorithms.BruteTSP(my);
+	 Path m = Algorithms.TravelingSalesman(my);
+	
 	 
-	 
-	 System.out.println(Algorithms.BruteTSP(my));
-    
+	 for (int i = 0; i < mi.size(); i++) {
+
+			
+			System.out.println(mi.get(i));
+	}
+	 //System.out.println(mi);
+	 //System.out.println(m);
+	 System.out.println(m.compareTo(mi));
+	 System.out.println(m.hypo1(my));
     
     
     

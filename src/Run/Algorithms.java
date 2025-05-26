@@ -185,6 +185,11 @@ public class Algorithms {
 			DFSTraversal(my, new boolean[my.size], new ArrayList<MSTNode>(), i);
 		}
 
+		/*for (int i = 0; i < paths.size(); i++) {
+			System.out.println(paths.get(i)+" with length = "+calculatePathSumsTSP(my, paths.get(i)));
+		}*/
+		
+		
 		int maxix = Integer.MAX_VALUE;
 		int k = 0;
 		for (int i = 0; i < paths.size(); i++) {
@@ -196,6 +201,7 @@ public class Algorithms {
 			}
 		}
 
+		System.out.println("Distance = "+maxix);
 		return paths.get(k);
 
 	}
@@ -271,7 +277,7 @@ public class Algorithms {
 
 	}
 
-	public static int[] TravelingSalesman(AdjacencyMatrix my) {
+	public static Path TravelingSalesman(AdjacencyMatrix my) {
 		MSTNode[] shortest = new MSTNode[my.size];
 		boolean[] checked = new boolean[my.size];
 		for (int i = 0; i < my.size; i++) {
@@ -319,10 +325,9 @@ public class Algorithms {
 			}
 		}
 
-		for (int i = 0; i < shortest.length; i++) {
-
-			System.out.println(shortest[i]);
-		}
+		
+		
+		
 
 		int[] defects3 = getDefects3(mi);
 		int[] defects1 = getDefects1(mi);
@@ -333,18 +338,24 @@ public class Algorithms {
 			System.out.println(defects3[i]);
 		}
 
+		Path m = new Path(defects3);
+		for (int i = 0; i < shortest.length; i++) {
+
+			m.add(shortest[i]);
+			System.out.println(shortest[i]);
+		}
 		System.out.println();
 		System.out.println();
 		System.out.println();
 		System.out.println();
 
-		System.out.println("----One Connection----");
+		/*System.out.println("----One Connection----");
 		for (int i = 0; i < defects1.length; i++) {
 
 			System.out.println(defects1[i]);
-		}
+		}*/
 
-		return null;
+		return m;
 	}
 
 	private static int[] getDefects3(AdjacencyMatrix my) {
