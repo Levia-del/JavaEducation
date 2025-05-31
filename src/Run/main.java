@@ -21,17 +21,18 @@ public class main {
 		
 		
 	AdjacencyMatrix my = new AdjacencyMatrix();
-	for(int i =1;i<=5;i++)
+	for(int i =1;i<=10;i++)
     {
       my.add(0);
     }
 	
 	System.out.println(my);
 	 
-	 Path mi = Algorithms.BruteTSP(my);
-	 Path m = Algorithms.TravelingSalesman(my);
 	
-	 
+	Path mi = Algorithms.BruteTSP(my);
+	
+	
+	 Path m = Algorithms.TravelingSalesman(my);
 	 for (int i = 0; i < mi.size(); i++) {
 
 			
@@ -39,10 +40,10 @@ public class main {
 	}
 	 //System.out.println(mi);
 	 //System.out.println(m);
+	 
 	 System.out.println(m.compareTo(mi));
-	 System.out.println(m.hypo1(my));
     
-    
-    
+		
+	 
 	}
 }

@@ -1,13 +1,13 @@
 package Run;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Algorithms {
 
 	private static String Hcode;
 	private static ArrayList<Path> paths = new ArrayList<Path>();
-	
-	
+
 	private static int uc = 0;;
 
 	public static int gcd(int a, int b) {
@@ -185,40 +185,36 @@ public class Algorithms {
 			DFSTraversal(my, new boolean[my.size], new ArrayList<MSTNode>(), i);
 		}
 
-		/*for (int i = 0; i < paths.size(); i++) {
-			System.out.println(paths.get(i)+" with length = "+calculatePathSumsTSP(my, paths.get(i)));
-		}*/
-		
-		
+		/*
+		 * for (int i = 0; i < paths.size(); i++) {
+		 * System.out.println(paths.get(i)+" with length = "+calculatePathSumsTSP(my,
+		 * paths.get(i))); }
+		 */
+
 		int maxix = Integer.MAX_VALUE;
 		int k = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			int sumss = calculatePathSumsTSP(my, paths.get(i));
-			if(sumss<maxix)
-			{
+			if (sumss < maxix) {
 				maxix = sumss;
 				k = i;
 			}
 		}
 
-		System.out.println("Distance = "+maxix);
+		System.out.println("Distance = " + maxix);
 		return paths.get(k);
 
 	}
 
-	
-	
-	
-	private static int calculatePathSumsTSP(AdjacencyMatrix my, Path mi)
-	{
+	private static int calculatePathSumsTSP(AdjacencyMatrix my, Path mi) {
 		int sumss = 0;
-		for(MSTNode i : mi.getList())
-		{
-			
+		for (MSTNode i : mi.getList()) {
+
 			sumss += my.matrix[i.node][i.link];
 		}
 		return sumss;
 	}
+
 	private static void DFSTraversal(AdjacencyMatrix my, boolean[] checked, ArrayList<MSTNode> path, int curr) {
 
 		if (path.size() == 0) {
@@ -248,29 +244,25 @@ public class Algorithms {
 		 */
 		if (done(checked)) {
 
-			path.add(new MSTNode(curr,0));
+			path.add(new MSTNode(curr, 0));
 			paths.add(new Path(path));
 			return;
 		}
 
-		
 		for (int i = 0; i < my.size; i++) {
 
-			
 			if (i != curr && !checked[i]) {
 				boolean[] nChecked = new boolean[my.size];
-				for(int j =0;j<my.size;j++)
-				{
-					
+				for (int j = 0; j < my.size; j++) {
+
 					nChecked[j] = checked[j];
 				}
-				
+
 				ArrayList<MSTNode> mi = new ArrayList<MSTNode>(path);
-				
-				
+
 				DFSTraversal(my, nChecked, mi, i);
-				
-				//System.out.println("i = "+i);
+
+				// System.out.println("i = "+i);
 			}
 		}
 		return;
@@ -325,10 +317,6 @@ public class Algorithms {
 			}
 		}
 
-		
-		
-		
-
 		int[] defects3 = getDefects3(mi);
 		int[] defects1 = getDefects1(mi);
 
@@ -338,22 +326,26 @@ public class Algorithms {
 			System.out.println(defects3[i]);
 		}
 
-		Path m = new Path(defects3);
+		System.out.println();
+
+		System.out.println();
+
+		System.out.println();
+		System.out.println();
+		System.out.println("----One Connection----");
+		for (int i = 0; i < defects1.length; i++) {
+
+			System.out.println(defects1[i]);
+		}
+
+		Path m = new Path();
 		for (int i = 0; i < shortest.length; i++) {
 
 			m.add(shortest[i]);
 			System.out.println(shortest[i]);
 		}
 		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-
-		/*System.out.println("----One Connection----");
-		for (int i = 0; i < defects1.length; i++) {
-
-			System.out.println(defects1[i]);
-		}*/
+		refractorDefect3(my, m, defects3[0]);
 
 		return m;
 	}
@@ -415,4 +407,89 @@ public class Algorithms {
 
 		return mo;
 	}
+
+	private static void refractorDefect3(AdjacencyMatrix my, Path mi, int d) {
+		System.out.println("Longest path is " + longestContinualPath(my.size, mi));
+	}
+
+	private static int longestContinualPath(int size, Path path) {
+		ArrayList<Integer> lengths = new ArrayList<Integer>();
+		for (MSTNode i : path.getList()) {
+			if (i.node == 0) {
+				lengths.add(longestContinualPathLocal(size, path, i.link));
+			}
+			else if(i.link == 0)
+			{
+				lengths.add(longestContinualPathLocal(size, path, i.node));
+			}
+		}
+		Collections.sort(lengths);
+		return lengths.getLast();
+	}
+
+	private static int longestContinualPathLocal(int size, Path path, int start) {
+
+		path = new Path(path);
+		int mC = 0;
+		int c = 1;
+
+		int lastLink = start;
+		int lastIndex = 0;
+		while (path.size() > mC) {
+			boolean[] checkedCon = new boolean[path.size()];
+			System.out.println(start);
+			checkedCon[path.indexOf(new MSTNode(0,start))] = true;
+			boolean[] checkedNode = new boolean[size];
+			checkedNode[0] = true;
+			while (true) {
+				boolean found = false;
+				for (int i = 0; i < path.size(); i++) {
+					if (!checkedCon[i]) {
+						if (path.get(i).node == lastLink && !checkedNode[path.get(i).link]) {
+							System.out.println("From " + lastLink + " to " + path.get(i).link);
+							checkedNode[lastLink] = true;
+							lastLink = path.get(i).link;
+							lastIndex = i;
+							
+							checkedCon[i] = true;
+							found = true;
+							c++;
+						} else if (path.get(i).link == lastLink && !checkedNode[path.get(i).node]) {
+							System.out.println("From " + lastLink + " to " + path.get(i).node);
+							lastLink = path.get(i).node;
+							lastIndex = i;
+							checkedCon[i] = true;
+							found = true;
+							c++;
+						}
+					}
+				}
+				if (!found) {
+					break;
+				}
+			}
+			if (c > mC) {
+				mC = c;
+			}
+			c = 1;
+			
+			System.out.println();
+			System.out.println();
+
+			System.out.println(lastIndex + " removed");
+			S
+			if(path.get(lastIndex).equals(new MSTNode(0, start)))
+			{
+				lastIndex++;
+			}
+			path.remove(lastIndex);
+			System.out.println();
+			System.out.println();
+			lastIndex = 0;
+			lastLink = start;
+		}
+
+		return mC;
+	}
+
 }

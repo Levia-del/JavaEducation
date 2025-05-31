@@ -1,35 +1,30 @@
 package Run;
 
 import java.util.ArrayList;
+
 import java.util.LinkedList;
 
 public class Path {
 	private LinkedList<MSTNode> my;
-	private LinkedList<MSTNode> wrongNodes;
-	private int[] defects3;
 
 	public Path() {
 		my = new LinkedList<MSTNode>();
-		wrongNodes = new LinkedList<MSTNode>();
-		defects3 = new int[1];
+
 	}
 
-	public Path(int[] d) {
-		my = new LinkedList<MSTNode>();
-		wrongNodes = new LinkedList<MSTNode>();
-		defects3 = d;
+	public Path(Path path) {
+		my = new LinkedList<MSTNode>(path.my);
+
 	}
 
 	public Path(ArrayList<MSTNode> toAdd) {
 		my = new LinkedList<MSTNode>(toAdd);
-		wrongNodes = new LinkedList<MSTNode>();
-		defects3 = new int[1];
+
 	}
 
 	public Path(LinkedList<MSTNode> toAdd) {
 		my = new LinkedList<MSTNode>(toAdd);
-		wrongNodes = new LinkedList<MSTNode>();
-		defects3 = new int[1];
+
 	}
 
 	public void add(MSTNode value) {
@@ -98,7 +93,6 @@ public class Path {
 			}
 			if (!hasEqual) {
 				System.out.println();
-				wrongNodes.add(my1);
 				System.out.println("A wrong node: " + my1);
 				c++;
 			}
@@ -107,35 +101,13 @@ public class Path {
 		return c;
 	}
 
-	public boolean hypo1(AdjacencyMatrix my) {
-		for (int k : defects3) {
-			for (int m = 0; m < my.size; m++) {
-				if (my.matrix[m][k] > 0) {
-					MSTNode i = new MSTNode(m, k);
+	public int indexOf(MSTNode other) {
 
-					for (MSTNode j : wrongNodes) {
-						if (i.equals(j)) {
-							MSTNode max = i;
-							for (int r = 0; r < defects3.length; r++) {
-								for (int p = 0; p < my.size; p++) {
-									if (my.matrix[p][k] > 0) {
-										MSTNode cur = new MSTNode(m, k);
-										if (my.matrix[cur.node][cur.link] > my.matrix[max.node][max.link]) {
-											max = cur;
-										}
-									}
-								}
-							}
-							if (max.equals(i)) {
-								return true;
-							}
-
-						}
-					}
-				}
-			}
+		for (int i = 0; i<my.size(); i++) {
+			if (my.get(i).equals(other))
+				return i;
 		}
-		return false;
+		return -1;
 	}
 
 }
