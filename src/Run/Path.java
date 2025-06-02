@@ -108,6 +108,13 @@ public class Path {
 				return i;
 		}
 		return -1;
+		
+	}
+	
+	
+	public MSTNode set(int i, MSTNode other)
+	{
+		return my.set(i, other);
 	}
 
 }

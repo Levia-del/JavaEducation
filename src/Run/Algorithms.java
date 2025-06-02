@@ -1,5 +1,5 @@
 package Run;
-
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -339,6 +339,7 @@ public class Algorithms {
 		}
 
 		Path m = new Path();
+		System.out.println("before");
 		for (int i = 0; i < shortest.length; i++) {
 
 			m.add(shortest[i]);
@@ -346,7 +347,13 @@ public class Algorithms {
 		}
 		System.out.println();
 		refractorDefect3(my, m, defects3[0]);
+		System.out.println("after");
+		for (int i = 0; i < shortest.length; i++) {
 
+			m.add(shortest[i]);
+			System.out.println(shortest[i]);
+		}
+		System.out.println();
 		return m;
 	}
 
@@ -409,7 +416,36 @@ public class Algorithms {
 	}
 
 	private static void refractorDefect3(AdjacencyMatrix my, Path mi, int d) {
-		System.out.println("Longest path is " + longestContinualPath(my.size, mi));
+		ArrayList<MSTNode> connections = findAllConnectionsTo(mi, d);
+		
+		int maxL = 0;
+		int maxI = 0;
+		MSTNode maxM = null;
+		for(int i = 0;i<connections.size();i++)
+		{
+			for(int r=0;r<my.size;r++)
+			{
+				for(int c=0;c<my.size;c++)
+				{
+					
+					int indexInPath = mi.indexOf(new MSTNode(r,c));
+					if(my.matrix[r][c]>0&&indexInPath<0) {
+						Path copy = new Path(mi);
+						copy.set(i, new MSTNode(r,c));
+						int le = longestContinualPath(my.size,copy);
+						if(le>maxL)
+						{
+							maxL = le;
+							maxI = i;
+							maxM = new MSTNode(r,c);
+						}
+					}
+				}
+			}
+		}
+		System.out.println("Node "+mi.get(maxI)+" changed to ");
+		mi.set(maxI, maxM);
+		System.out.println("Node "+mi.get(maxI));
 	}
 
 	private static int longestContinualPath(int size, Path path) {
@@ -437,7 +473,7 @@ public class Algorithms {
 		int lastIndex = 0;
 		while (path.size() > mC) {
 			boolean[] checkedCon = new boolean[path.size()];
-			System.out.println(start);
+			//System.out.println(start);
 			checkedCon[path.indexOf(new MSTNode(0,start))] = true;
 			boolean[] checkedNode = new boolean[size];
 			checkedNode[0] = true;
@@ -446,7 +482,7 @@ public class Algorithms {
 				for (int i = 0; i < path.size(); i++) {
 					if (!checkedCon[i]) {
 						if (path.get(i).node == lastLink && !checkedNode[path.get(i).link]) {
-							System.out.println("From " + lastLink + " to " + path.get(i).link);
+							//System.out.println("From " + lastLink + " to " + path.get(i).link);
 							checkedNode[lastLink] = true;
 							lastLink = path.get(i).link;
 							lastIndex = i;
@@ -455,7 +491,7 @@ public class Algorithms {
 							found = true;
 							c++;
 						} else if (path.get(i).link == lastLink && !checkedNode[path.get(i).node]) {
-							System.out.println("From " + lastLink + " to " + path.get(i).node);
+							//System.out.println("From " + lastLink + " to " + path.get(i).node);
 							lastLink = path.get(i).node;
 							lastIndex = i;
 							checkedCon[i] = true;
@@ -473,23 +509,35 @@ public class Algorithms {
 			}
 			c = 1;
 			
-			System.out.println();
-			System.out.println();
+			///System.out.println();
+			//System.out.println();
 
-			System.out.println(lastIndex + " removed");
-			S
+			//System.out.println(lastIndex + " removed");
 			if(path.get(lastIndex).equals(new MSTNode(0, start)))
 			{
 				lastIndex++;
 			}
 			path.remove(lastIndex);
-			System.out.println();
-			System.out.println();
+			//System.out.println();
+			//System.out.println();
 			lastIndex = 0;
 			lastLink = start;
 		}
 
 		return mC;
+	}
+	
+	private static ArrayList<MSTNode> findAllConnectionsTo(Path path, int target)
+	{
+		ArrayList<MSTNode> result = new ArrayList<MSTNode>();
+		for(MSTNode i : path.getList())
+		{
+			if(i.link == target ||i.node == target)
+			{
+				result.add(i);
+			}
+		}
+		return result;
 	}
 
 }
