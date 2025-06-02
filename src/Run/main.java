@@ -1,6 +1,6 @@
 package Run;
 
-
+import java.util.ArrayList;
 
 public class main {
 
@@ -20,7 +20,7 @@ public class main {
 	//System.out.println(Algorithms.huffman("pneumonoultram"));
 		
 		
-	AdjacencyMatrix my = new AdjacencyMatrix();
+	/*(AdjacencyMatrix my = new AdjacencyMatrix();
 	for(int i =1;i<=10;i++)
     {
       my.add(0);
@@ -41,9 +41,15 @@ public class main {
 	 //System.out.println(mi);
 	 //System.out.println(m);
 	 
-	 System.out.println(m.compareTo(mi));
+	 System.out.println(m.compareTo(mi));*/
     
-		
-	 
+	ArrayList<KnapsackItem> my = new ArrayList<KnapsackItem>();
+	my.add(new KnapsackItem("Crown", 3, 500));
+	my.add(new KnapsackItem("Cup", 5, 400));
+	my.add(new KnapsackItem("Globe", 1, 200));
+	my.add(new KnapsackItem("Microscope",2, 300));
+	
+	KnapsackBag k = new KnapsackBag(10);
+	 System.out.println(Algorithms.knapsack(my, k));
 	}
 }
