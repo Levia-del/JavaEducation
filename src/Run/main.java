@@ -43,13 +43,20 @@ public class main {
 	 
 	 System.out.println(m.compareTo(mi));*/
     
-	ArrayList<KnapsackItem> my = new ArrayList<KnapsackItem>();
-	my.add(new KnapsackItem("Crown", 3, 500));
+	/*ArrayList<KnapsackItem> my = new ArrayList<KnapsackItem>();
+	my.add(new KnapsackItem("LOL", 4, 401));
 	my.add(new KnapsackItem("Cup", 5, 400));
+	my.add(new KnapsackItem("Crown", 3, 500));
+	
 	my.add(new KnapsackItem("Globe", 1, 200));
 	my.add(new KnapsackItem("Microscope",2, 300));
 	
-	KnapsackBag k = new KnapsackBag(10);
-	 System.out.println(Algorithms.knapsack(my, k));
+	KnapsackBag k = new KnapsackBag(8);
+	KnapsackBag sol = Algorithms.knapsack(my, k);
+	 System.out.println(sol);
+	 System.out.println("Value: "+sol.getTotalValue());*/
+		
+		
+		 System.out.println(Algorithms.fibonacciTabulation(99));
 	}
 }

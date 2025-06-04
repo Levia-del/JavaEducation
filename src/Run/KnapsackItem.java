@@ -37,7 +37,7 @@ public class KnapsackItem {
    
    public String toString()
    {
-	   return name + " with weight: "+weight+" kg and value of: "+ value+"$";
+	   return name + " weight: "+weight+" kg value: "+ value+"$";
    }
 	
 }

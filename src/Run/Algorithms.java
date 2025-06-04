@@ -9,8 +9,12 @@ public class Algorithms {
 	private static String Hcode;
 	private static ArrayList<Path> paths = new ArrayList<Path>();
 	private static ArrayList<KnapsackBag> bags = new ArrayList<KnapsackBag>();
-
-	private static int uc = 0;;
+	
+    private static int ops =0;
+   
+    private static int[] memo = new int[100]; 
+    
+	
 
 	public static int gcd(int a, int b) {
 		if (b > a) {
@@ -538,25 +542,42 @@ public class Algorithms {
 
 		int m = 0;
 		int index =0;
-		for(int i = 0;bags)
+		for(int i = 0;i<bags.size();i++)
 		{
-			if(i.getTotalValue()>m)
+			if(bags.get(i).getTotalValue()>m)
 			{
-				m = i.getTotalValue()
+				m = bags.get(i).getTotalValue();
+				index = i;
 			}
 		}
-		
-		return null;
+		System.out.println(ops+" operations");
+		return bags.get(index);
 	}
 
 	private static void knapsackR(ArrayList<KnapsackItem> items, KnapsackBag k)
+
+	
+
+	
+	
 	{
+		//System.out.println("Enter with bag of: "+k);
+		//System.out.println("Enter with items left: "+items);
+		//System.out.println();
+		ops++;
 		boolean found = false;
 		for(int i = 0;i< items.size();i++)
 		{
-		   if(k.getWeightLeft()+items.get(i).getWeight()>=0)
+		   if(k.getWeightLeft()-items.get(i).getWeight()>=0)
 		   {
+			   //System.out.println("Weight left in backpack: "+k.getWeightLeft());
 			   k.add(items.remove(i));
+			   /*System.out.println();
+			   System.out.println("Exit with bag of: "+k);
+				System.out.println("Exit with items left: "+items);
+				System.out.println();
+				System.out.println("-----------------");
+				System.out.println();*/
 			   knapsackR(new ArrayList<KnapsackItem>(items), new KnapsackBag(k));
 			   found = true;
 		   }
@@ -565,7 +586,46 @@ public class Algorithms {
 		if(!found)
 		{
 			bags.add(k);
+			//System.out.println("Finish");
 			return;
 		}
+	}
+	
+	public static int fibonacciMemoization(int n)
+	{
+		Sorts.getAnyArray(memo);
+		ops++;
+		System.out.println(n);
+		if(n<=1)
+		{
+			
+			memo[n] =n;
+			return n;
+		}
+		
+		if(memo[n]>0)
+		{
+			return memo[n];
+		}
+		else
+		{
+			memo[n] = fibonacciMemoization(n-1)+fibonacciMemoization(n-2);
+			
+		}
+		return memo[n];
+	}
+	
+	public static int fibonacciTabulation(int n)
+	{
+		
+		memo[1] = 1;
+		memo[2] = 1;
+		
+		for(int i = 3;i<=n;i++)
+		{
+			memo[i]  = memo[i-1]+memo[i-2];
+			Sorts.getAnyArray(memo);
+		}
+		return memo[n];
 	}
 }
